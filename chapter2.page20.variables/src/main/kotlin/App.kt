@@ -15,9 +15,12 @@ fun main(args: Array<String>) {
     // no type inference without initializer
     val answer3: Int
     answer3 = 42
-    // var - mutable reference (non-final variable in Java)
 
     val languages = arrayListOf("Java") // immutable reference
     languages.add("Kotlin") // mutable object
+
+    // var - mutable reference (non-final variable in Java)
+    var answer4 =42 // var value can be changed
+    // answer4 = "no answer" // but type - not
 
 }
