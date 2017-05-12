@@ -8,6 +8,8 @@ fun main(args: Array<String>) {
     println(Color2.BLUE.rgb())
     println(getMnemonic(Color2.BLUE))
     println(getWarmth(Color2.BLUE))
+    println(mix(Color2.VIOLET,Color2.BLUE))
+    println(mixOptimized(Color2.VIOLET,Color2.BLUE))
 }
 
 // enums in Kotlin
@@ -52,4 +54,33 @@ fun getWarmth(color: Color2) =
         Color2.BLUE, Color2.INDIGO, Color2.VIOLET -> "cold"
     }
 
+fun mix(firstColor: Color2, secondColor: Color2) =
+        when (setOf(firstColor,secondColor)) { // when expression - any object equality check
+            setOf(Color2.RED,Color2.YELLOW) -> Color2.ORANGE
+            setOf(Color2.BLUE,Color2.YELLOW) -> Color2.GREEN
+            setOf(Color2.BLUE,Color2.VIOLET) -> Color2.INDIGO
+            else -> throw Exception("Dirty color") // default branch
+        }
+
+fun mixOptimized(firstColor: Color2, secondColor: Color2) =
+
+        when { // no when argument
+
+            // less concise but more efficient implementation  - no set creation on each and every method call
+
+            (firstColor == Color2.RED && secondColor ==  Color2.YELLOW) || // any boolean expression can be used
+            (firstColor == Color2.YELLOW && secondColor ==  Color2.RED) -> // if when expression is not supplied
+                Color2.ORANGE
+
+            (firstColor == Color2.BLUE && secondColor ==  Color2.YELLOW) ||
+            (firstColor == Color2.YELLOW && secondColor ==  Color2.BLUE) ->
+                Color2.GREEN
+
+            (firstColor == Color2.BLUE && secondColor ==  Color2.VIOLET) ||
+            (firstColor == Color2.VIOLET && secondColor ==  Color2.BLUE) ->
+                Color2.INDIGO
+
+            else -> throw Exception("Dirty color") // default branch
+
+        }
 
