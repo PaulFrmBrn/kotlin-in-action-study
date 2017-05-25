@@ -5,7 +5,7 @@ package strings
  * @author PaulFrmBrn
  */
 
-// It will be generated JinnKt.class with corresponding class with static method joinToString
+// It will be generated JoinKt.class with corresponding class with static method joinToString
 
 var opCount = 1 // will have setter and getter
 val UNIX_LINE_SEPARATOR = "\n" // only getter
