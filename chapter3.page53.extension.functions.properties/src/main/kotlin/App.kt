@@ -34,6 +34,10 @@ fun main(args: Array<String>) {
     view.showOff() // will print 'i'm a view'
 
     // if there is member function with the same signature as extension, first has a priority
+
+    // extension properties
+    println("Kotlin".lastCharProp)
+
 }
 
 open class View {
@@ -46,6 +50,19 @@ class Button: View() {
 
 fun View.showOff() = println("i'm a view")
 fun Button.showOff() = println("i'm a button")
+
+// extension properties
+// same idea as for extension functions but different syntax
+// should have getter, but no setter or initializer - there is no place to store the value
+val String.lastCharProp: Char
+    get() = get(length-1)
+
+// could have setter and getter if content can be modified
+var StringBuilder.lastCharProp: Char
+    get() = get(length -1) // property getter
+    set(value: Char) { // property setter
+        this.setCharAt(length-1, value)
+    }
 
 
 
