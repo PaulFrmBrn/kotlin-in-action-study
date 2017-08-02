@@ -37,11 +37,9 @@ class Button : Clickable { // class can implement multiple interfaces but extend
 class Button2 : Clickable, Focusable {
     override fun click() = println("i'm clicked")
     // compiler error without overriding common for both interfaces method
-    // Kotlin forces programmer to provide his own implementation
+    // Kotlin forces class to provide its own implementation
     override fun showOff() {
         super<Clickable>.showOff() // specifies concrete implementation to call
         super<Focusable>.showOff() // this is Kotlin's analogue for Java's Focusable.super.showOff()
     }
-
-
 }
