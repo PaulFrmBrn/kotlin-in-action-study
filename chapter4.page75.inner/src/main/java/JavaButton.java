@@ -3,7 +3,7 @@ import org.jetbrains.annotations.NotNull;
 /**
  * @author PaulFrmBrn
  */
-public class ButtonJava implements View {
+public class JavaButton implements View {
 
 
     @Override
@@ -15,8 +15,8 @@ public class ButtonJava implements View {
     public void restoreState(State stateKt) {
     }
 
-    // not static by default
-    public class ButtonState implements State {
+    // not static by default (nested)
+    public class JavaButtonState implements State {
 
     }
 
