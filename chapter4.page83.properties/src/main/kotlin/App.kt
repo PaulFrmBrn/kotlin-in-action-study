@@ -14,10 +14,10 @@ fun main(args: Array<String>) {
     println("name = ${person.name}, address = ${person.address}")
 
     val lengthCounter = LengthCounter()
-    print("counter = ${lengthCounter.counter}")
+    println("counter = ${lengthCounter.counter}")
     lengthCounter.addWord("foo")
     // lengthCounter.counter = 5 // compile error - private setter
-    print("counter = ${lengthCounter.counter}")
+    println("counter = ${lengthCounter.counter}")
 }
 
 interface User {
