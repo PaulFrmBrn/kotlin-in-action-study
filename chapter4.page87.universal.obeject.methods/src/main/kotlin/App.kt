@@ -7,25 +7,40 @@ fun main(args: Array<String>) {
 
     // toString()
     println("toString()")
-    println(Client("Foo",1).toString())
-    println(ClientOverride("Foo",1).toString()) // using overrided toString
+    println("client: ${Client("Foo",1).toString()}")
+    println("override: ${ClientOverride("Foo",1).toString()}") // using overriden toString
+    println("data: ${ClientData("Foo",1).toString()}") // using toString from data class
 
     // equals()
     println("equals()")
-    println(Client("Foo",1) == Client("Foo",1))
+    println("client: ${Client("Foo",1) == Client("Foo",1)}")
     // in Kotlin '==' calls equals() under the hood
-    println(ClientOverride("Foo",1) == ClientOverride("Foo",1))
+    println("override: ${ClientOverride("Foo",1) == ClientOverride("Foo",1)}")
     // and '===' works like Java's '==' - for reference equality
-    println(ClientOverride("Foo",1) === ClientOverride("Foo",1))
+    println("override: ${ClientOverride("Foo",1) === ClientOverride("Foo",1)}")
+    // data class
+    println("data: ${ClientData("Foo",1) == ClientData("Foo",1)}")
+    println("data: ${ClientData("Foo",1) === ClientData("Foo",1)}")
 
     // hashCode()
     println("hashCode()")
-    println(hashSetOf(Client("Bar",2)).contains(Client("Bar",2)))
-    println(hashSetOf(ClientOverride("Bar",2)).contains(ClientOverride("Bar",2)))
+    println("client: ${hashSetOf(Client("Bar",2)).contains(Client("Bar",2))}")
+    println("override: ${hashSetOf(ClientOverride("Bar",2)).contains(ClientOverride("Bar",2))}")
+    println("data: ${hashSetOf(ClientData("Bar",2)).contains(ClientData("Bar",2))}")
+
+    // copy()
+    println("copy()")
+    // println("client: ${Client("Bar",2).copy("Bar",3)}") // compiler error - there is no such method
+    println("override: ${ClientOverride("Bar",2).copy("Bar",3)}")
+    println("data: ${ClientData("Bar",2).copy("Bar",3)}")
 
 }
 
 class Client(val name: String, val postCode: Int)
+
+// data class - generates toString(), equals(), hashCode() and copy()
+// NB generated equals() takes into account only properties declared in primary constructor
+data class ClientData(val name: String, val postCode: Int)
 
 class ClientOverride(val name: String, val postCode: Int) {
 
@@ -46,5 +61,8 @@ class ClientOverride(val name: String, val postCode: Int) {
         result = 31 * result + postCode
         return result
     }
+
+    // manually written
+    fun copy(name: String = this.name, postCode:Int = this.postCode) = ClientOverride(name,postCode)
 
 }
