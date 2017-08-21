@@ -38,7 +38,9 @@ fun main(args: Array<String>) {
     var counter: Int = 0
 
     // Object expressions as Java's analogue of anonymous classes
-    val somVariable = object : SomeInterface { // can implemet multiple interfaces, unlike Java's single
+    // this is not singleton, but the class has no assigned name
+    // but instance can have a name
+    val somVariable = object : SomeInterface { // can implement multiple interfaces, unlike Java's single
         override fun method1(): String {
             counter++; // unlike Java, non final variables can be accessed
             return "one"
