@@ -50,8 +50,25 @@ fun main(args: Array<String>) {
     // 4. lambda can access local variables of containing scope
     printMessageWithPrefix("Error: ",listOf("403 Forbidden","404 Not Found"))
     // and even modify them
-    // (wrapper object created in  this case to be stored 'nea'r the lambda and to store the reference to the local variable)
+    // wrapper object is created in this case to be stored 'near' the lambda and to store the reference to the local variable
     printMessageWithPrefixAndCount("Error: ",listOf("403 Forbidden","404 Not Found"))
+
+    // 5. member reference
+    val getAge = Person::age
+              /*class*/ /*member*/
+
+    val getAge2 = { p:Person->p.age } // lambda has the same type as member reference
+    run(::salute) // reference to a top-level function
+
+    val createPerson = ::Person
+    val sting = createPerson("Sting", 65) // reference to a constructor
+    println(sting)
+
+    fun Person.isAdult() = age >= 18
+    val predicate  = Person::isAdult // reference to the extension function
+
+    val stingsAgeFunction = sting::age // bound member reference - reference to the method on a specific object
+    println("stingsAgeFunction = ${stingsAgeFunction()}")
 
 }
 
@@ -60,8 +77,8 @@ fun printMessageWithPrefix(prefix:String, messages: Collection<String>) {
 }
 
 fun printMessageWithPrefixAndCount(prefix:String, messages: Collection<String>) {
-    var clientErrors = 0;
-    var serverErrors = 0;
+    var clientErrors = 0 // captured by lambda - Ref object is created to store reference clientErrors - mutable variable (var)
+    var serverErrors = 0 // final variables (val) references are just copied to be stored 'near' the lambda code
     messages.forEach {
         if (it.startsWith("4")) {
             clientErrors++
@@ -74,6 +91,7 @@ fun printMessageWithPrefixAndCount(prefix:String, messages: Collection<String>) 
 
 }
 
+fun salute() = println("Salute!")
 
 data class Person(val name: String, val age: Int)
 
@@ -81,7 +99,7 @@ fun findTheOldest(people: List<Person>): Person? {  // verbouse
     var maxAge = 0
     var theOldest: Person? = null
     for (person in people) {
-        if (person.age > maxAge) { // error prone code
+        if (person.age > maxAge) { // error prone code - it's easy to use '<' in here
             maxAge = person.age
             theOldest = person
         }
