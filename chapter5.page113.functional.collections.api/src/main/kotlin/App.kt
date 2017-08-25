@@ -6,7 +6,7 @@ fun main(args: Array<String>) {
     println("functional APIs for collections")
 
     val ints = listOf(1, 2, 3, 4)
-    val people = listOf(Person("Alice", 29), Person("Bob", 31))
+    val people = listOf(Person("Alice", 29), Person("Bob", 31), Person("Carol", 31))
 
     // filtering
     // doesn't change the collection -  new collection as a result
@@ -44,6 +44,11 @@ fun main(args: Array<String>) {
     // count of elements that satisfy predicate
     println(people.count(canBeInClub29)) // no intermediate collection created
     println(people.filter(canBeInClub29).size) // intermediate collection created
+
+    // grouping
+    val groupedPeople:  Map<Int,List<Person>> = people.groupBy { it.age } // map as a result
+    println(groupedPeople)
+    println(listOf("a","ab","b").groupBy { it.first() })
 
 }
 
