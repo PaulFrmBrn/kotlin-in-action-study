@@ -87,7 +87,7 @@ fun printMessageWithPrefixAndCount(prefix:String, messages: Collection<String>) 
         }
         println("$prefix $it")
     }
-    println("$clientErrors client errors, $serverErrors server errors")
+    println("$clientErrors client errors, $serverErrors server errors ")
 
 }
 
