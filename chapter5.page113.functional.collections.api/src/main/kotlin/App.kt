@@ -50,6 +50,22 @@ fun main(args: Array<String>) {
     println(groupedPeople)
     println(listOf("a","ab","b").groupBy { it.first() })
 
+    // flattering
+    val books = listOf(
+            Book("the twelve chairs", listOf("Ilf","Petrov")),
+            Book("Atlas Shrugged",listOf("Rand")),
+            Book("Mort", listOf("Terry Pratchett")),
+            Book("Good Omens", listOf("Terry Pratchett", "Neil Gaiman"))
+    )
+    println(books.flatMap { it.authors }) // maps each book to List<Authors> and then flattens all lists in one
+    println(books.flatMap { it.authors }.toSet()) // eliminates duplications
+
+    println(listOf("abc","def").flatMap { it.toList() }) // single list
+    println(listOf("abc","def").map { it.toList() }) // two lists
+    println(listOf("abc","def").map { it.toList() }.flatten()) // single list
+
 }
 
 data class Person(val name:String,val age: Int)
+
+data class Book(val title: String, val authors: List<String>)
