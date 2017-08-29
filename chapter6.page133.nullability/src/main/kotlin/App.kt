@@ -17,7 +17,7 @@ fun main(args: Array<String>) {
 
     // in Java @NotNull + @Nullable or Optional can be used to avoid NPE
 
-    // 1. 'safe-call' operator
+    // 'safe-call' operator
     // return null if calling method on null-reference or result of method call otherwise
     val string: String? = null;
     var toUpperCase: String? = string?.toUpperCase() // the result type is String?
@@ -29,7 +29,7 @@ fun main(args: Array<String>) {
     println(managerName(Employee("Bar",manager)))
     println(Person("Dmitry",null).countryName())
 
-    // 2. 'Elvis operator' (null-coalescing operator)
+    // 'Elvis operator' (null-coalescing operator)
     // provides default values instead of null
     val country: String? = null
     var country2 = country?:"Unknown" // the result type is String
