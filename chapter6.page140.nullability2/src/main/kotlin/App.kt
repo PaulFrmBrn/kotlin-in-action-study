@@ -39,8 +39,49 @@ fun main(args: Array<String>) {
     email = null
     email?.let { sendEmailTo(it) } // lambda won't be called at all - no exceptions raised, neither output printed
 
+    // late-initialized properties
+    // ome frameworks (testing, DI, etc.) initialize variables/properties not through the constructor but calling special
+    // initialization methods. So such variables should be declared of nullable types
+    val myTest = MyTest()
+    myTest.setUp() // initialization of myService
+    myTest.testAction() // so myService inside MyTest shuold now use '!!.' or '?.'
+    // 'lateinit' helps avoid using null checks
 
+    val myTestLateinit = MyTestLateinit()
+    // myTestLateinit.testAction() // runtime exception if lateinit var is not initialized and called
+    // UninitializedPropertyAccessException: lateinit property myService has not been initialized
+    myTestLateinit.setUp()
+    myTestLateinit.testAction()
 
+}
+
+class MyService {
+    fun performanceAction() = "foo"
+}
+
+class MyTest {
+    private var myService: MyService? = null // of nullable type. always a var
+    // backing field has the same visibility as lateinit property
+    fun setUp() {
+        myService = MyService()
+    }
+    fun testAction() {
+        if (myService!!.performanceAction() == "foo") {
+            println("Test is OK")
+        }
+    }
+}
+
+class MyTestLateinit {
+    private lateinit var myService: MyService // variable of non-null type without initialization
+    fun setUp() {
+        myService = MyService()
+    }
+    fun testAction() {
+        if (myService.performanceAction() == "foo") { // no null checks
+            println("Test is OK")
+        }
+    }
 }
 
 class Person(val firstName: String, val lastName: String) {
