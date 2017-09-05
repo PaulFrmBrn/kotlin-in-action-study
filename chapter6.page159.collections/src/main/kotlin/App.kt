@@ -41,6 +41,16 @@ fun main(args: Array<String>) {
     val target: Collection<Int> = arrayListOf(1)
     // copyElement(source,target) // compilation exception
 
+    // read-only collections are not necessary immutable and not thread-safe
+    val mutableOrigin = mutableListOf(1,2,3)
+    val readOnlyReference: List<Int> = mutableOrigin
+    println("mutableOrigin = $mutableOrigin")
+    println("readOnlyReference = $readOnlyReference")
+    mutableOrigin.add(5)
+    println("mutableOrigin = $mutableOrigin")
+    println("readOnlyReference = $readOnlyReference") // will print [1, 2, 3, 5]
+
+
 }
 
 fun <T> copyElement(source: Collection<T>, // this collection won't be modified
