@@ -34,6 +34,26 @@ fun main(args: Array<String>) {
     // e.g. in the examples above Java's List<String> is represented by List<String>? and MutableList<String?>
     // the correct choice depends on exact contract and desired implementation
 
+    // Array in Kotlin is a generic class
+    val array = Array<Int>(5,{it}) // creating new array. way 1
+    for (i in array.indices) { // getting index
+        println("$i = ${array[i]}") // accessing via index
+    }
+    val array2: Array<String?> = arrayOfNulls(5) // creating new array. way 2
+    println(array2.joinToString("-"))
+    val array3 = arrayOf(1,2,3,4,5) // creating new array. way 3
+    println(array3.joinToString("-"))
+    val typedArray: Array<String> = listOf("a", "b", "c").toTypedArray() // converting from list to array
+    // Kotlin's Array<Int> -> Java's Integer[] (boxed)
+    // Kotlin's IntArray -> Java's int[] (no boxing)
+    val intArray = IntArray(5) // creating new array of primitives . way 1
+    println(intArray.joinToString ("-"))
+    val intArray2 = intArrayOf(1,2,3) // creating new array of primitives . way 2
+    println(intArray2.joinToString ("-"))
+    val intArray3 = IntArray(5,{it})  // creating new array of primitives . way 3
+    println(intArray3.joinToString ("-"))
+    // Kotlin support same set of extension functions for arrays as for collections
+    intArray3.forEachIndexed { index, element -> println("Element $index is: $element") }
 
 }
 
