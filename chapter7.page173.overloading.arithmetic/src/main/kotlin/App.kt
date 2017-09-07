@@ -2,6 +2,7 @@
  * @author PaulFrmBrn
  */
 fun main(args: Array<String>) {
+
     println("overloading arithmetic operators")
 
     // Java uses special interfaces connected with special language features
@@ -20,6 +21,29 @@ fun main(args: Array<String>) {
     // operator functions can be overloaded
     // there is no special operators fo bitwise operations -infix functions are used instead
 
+    // defining operator normally leads to defining compound assignment operator
+    var p3 = Point(50,60) // this is var
+    p3 += Point(5,5) // this equals to 'p3 = p3 + Point(5,5)' - new object created
+    println(p3)
+
+    // if the aim is to modify object - compound assignment operator should be defined explicitly
+    // this function will return 'Unit' (void)
+    // MutableCollections#plusAssign(T)
+    val array = arrayListOf(1,2,3)
+    array += 42 // for collections compound assignment operators modify collection
+    val newArray = array + listOf(4,5) // while regular operators create new one
+    println(array)
+    println(newArray)
+
+    // if both plus and plusAssign are applicable compiler will report an error
+    val mutablePoint1 = MutablePoint(0,0)
+    // var mutablePoint1 = MutablePoint(0,0) // compilation error
+    mutablePoint1 += MutablePoint(1,1)
+    println(mutablePoint1)
+
+    // to avoid this either operator should be called as function
+    // or 'val' used to make calling '+=' impossible because of immutability
+
 }
 
 data class Point(val x: Int, val y: Int) {
@@ -34,6 +58,19 @@ data class Point(val x: Int, val y: Int) {
 operator fun Point.plus(other: Point): Point { // extension functions is shadowed by member function
     println("plus extension function")
     return Point(this.x + other.x, this.y + other.y)
+}
+
+data class MutablePoint(var x: Int, var y: Int)
+
+operator fun MutablePoint.plus(other: MutablePoint): MutablePoint {
+    println("plus extension function for mutable point")
+    return MutablePoint(this.x + other.x, this.y + other.y)
+}
+
+operator fun MutablePoint.plusAssign(other: MutablePoint) {
+    println("plus assign extension function for mutable point")
+    this.x = this.x +other.x
+    this.y = this.y + other.y
 }
 
 operator fun Point.times(scale: Double): Point { // operand don't have to be of the same type
