@@ -1,3 +1,5 @@
+import java.math.BigDecimal
+
 /**
  * @author PaulFrmBrn
  */
@@ -44,6 +46,11 @@ fun main(args: Array<String>) {
     // to avoid this either operator should be called as function
     // or 'val' used to make calling '+=' impossible because of immutability
 
+    // unary operators 'unaryPlus +', 'unaryMinus -', 'not !', 'inc ++(pre/post)', 'dec --(pre/post)',  can be overloaded
+    println(-p1)
+    var point4 = Point(0,0)
+    println(point4++)
+    println(++point4)
 }
 
 data class Point(val x: Int, val y: Int) {
@@ -52,6 +59,17 @@ data class Point(val x: Int, val y: Int) {
         println("plus member function")
         return Point(this.x + other.x, this.y + other.y)
     }
+}
+
+// pre and post inc/dec operators are supported with the single operator overloading
+operator fun Point.inc(): Point {
+    return Point(this.x + 1, this.y + 1)
+}
+
+// unary operators take no arguments
+operator fun Point.unaryMinus(): Point {
+    println("unary minus")
+    return Point(-this.x,-this.y)
 }
 
 // using extension functions to overload operators of external library classes is common pattern
