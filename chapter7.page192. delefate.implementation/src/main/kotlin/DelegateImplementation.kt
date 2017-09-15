@@ -19,6 +19,7 @@ open class PropertyChangeAware {
 }
 
 // helper class imcapsulating notification processing for the property
+// but still this is boilerplate code can be eliminated
 class ObservableProperty(val propName: String, var propValue: Int, val changeSupport: PropertyChangeSupport) {
     fun getValue(): Int = propValue
     fun setValue(newValue: Int) {
@@ -33,7 +34,7 @@ class ObservableProperty(val propName: String, var propValue: Int, val changeSup
 class Person(val name: String, age: Int, salary: Int): PropertyChangeAware() {
 
     // no more duplication thanks to backing field of ObservableProperty type
-    // but still there is boilerplate code in ObservableProperty can be eliminated
+    // but still there is boilerplate code can be eliminated
     val _age = ObservableProperty("age",age,changeSupport)
     var age: Int
         get() = _age.getValue()
