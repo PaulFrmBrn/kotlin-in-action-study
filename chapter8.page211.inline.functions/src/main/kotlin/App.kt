@@ -1,5 +1,8 @@
+import java.io.BufferedReader
+import java.io.FileReader
 import java.util.concurrent.locks.Lock
 import java.util.concurrent.locks.ReentrantReadWriteLock
+import kotlin.concurrent.withLock
 
 /**
  * @author PaulFrmBrn
@@ -44,6 +47,66 @@ fun main(args: Array<String>) {
     }
     // <<< function inlining
 
+    // NB General rule: lambda can be inlined if it's called directly or passed as an argument to another inline function
+    // function can be partly inlined
+    partlyInlined({ println("a") }, { println("b")})
+
+    val people = listOf(Person("Alice",29), Person("Bob",31))
+
+    // without lambdas
+    val result = mutableListOf<Person>()
+    for (person in people) {
+        if (person.age < 30) {
+            result.add(person)
+        }
+    }
+    println(result)
+
+    // using lambdas
+    println(people.filter { it.age < 30 })
+    // because filter() is marked as inline, bytecode for both filter() and lambda passed will be inlined where filter() is called
+    // so bytecode generated for the version with lambda and version without lambda is the same
+
+    // but
+    println(people.filter { it.age < 30 } // calling filter() results to new intermediate collection to be created
+                  .map { Person::name }) // which is accessed in map() call
+    // because these are function calls on regular Collection objects
+
+    // to avoid creating intermediate collections Kotlin's Sequences or Java's Streams can be used
+    // function inlining can not be implemented in these cases as every sequence non-terminal method call leads
+    // to storing lambda reference into sequence object
+
+    // inlining regular functions without lambda params is useless - JVM automatically inlines code
+    // while translating bytecode into machine code if this provides benefits
+
+    // but inlining functions with lambda arguments is beneficial - call is saved and extra class and object creation,
+    // JVM can not do this optimisation automatically, and it's impossible to use features like non-local return without inlining
+
+    // NB inlining large lambdas can lead to resulting bytecode size increasing, that's why should bw avoided
+
+    // resource management with inline functions in Kotlin
+    lock.withLock {
+        println("in lock through") // executes the same logic as synchronized() -
+        // lambda describes actions with resource (lock object), while withLock() deals with lock() and unlock() operations
+
+    }
+
+    // Kotlin's use() can be used as Java's try-with-resources replacement - deals with 'Closable' interface
+    // readFirstLineFromFile()
+
+    // withLock() and use() are inline function, so no overhead is present
+
+}
+
+fun readFirstLineFromFile(path: String): String {
+    BufferedReader(FileReader(path)).use { return it.readLine() }
+}
+
+data class Person(val name: String, val age: Int)
+
+inline fun partlyInlined(inlined: () -> Unit, noinline notInlined: () -> Unit) {
+    inlined()
+    notInlined()
 }
 
 // inlined function
@@ -55,5 +118,3 @@ inline fun <T> synchronized(lock: Lock, action: () -> T): T {
         lock.unlock()
     }
 }
-
-//
