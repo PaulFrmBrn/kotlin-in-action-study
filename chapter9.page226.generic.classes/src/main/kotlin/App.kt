@@ -14,7 +14,14 @@ fun main(args: Array<String>) {
     ensureTrailingPeriod(str)
     println(str)
 
+    NullableProcessor<String?>() // no compilation error
+    NullableProcessor<String>() // no compilation error
+
+    // NonnullProcessor<String?>() // compilation error
+    NonnullProcessor<String>() // no compilation error
+
 }
+
 
 // Number - is upper value
 fun <T: Number> T.half(): Double {
@@ -50,4 +57,20 @@ class SimpleString : Comparable<String> {
 }
 interface SimpleComparable<T> {
     fun compareTo(other: T): Int
+}
+
+
+class NullableProcessor<T> { // specific instantiations can be of any type including nullable types
+    fun process(value: T) {
+        // value.hashCode() // compilation error NullableProcessor<T> is in fact NullableProcessor<T: Any?>
+        value?.hashCode()
+    }
+}
+
+// to guarantee type parameter is always non-null type, upper bound should be of non-null type
+class NonnullProcessor<T : Any> { // specific instantiations can be of any type including nullable types
+    fun process(value: T) {
+         value.hashCode() // no compilation error
+         // value?.hashCode() // unnecessary safe call
+    }
 }
