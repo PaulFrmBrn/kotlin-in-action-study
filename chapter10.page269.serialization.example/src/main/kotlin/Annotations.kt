@@ -1,5 +1,3 @@
-import java.util.*
-import kotlin.reflect.KClass
 
 /**
  * @author PaulFrmBrn
@@ -7,9 +5,6 @@ import kotlin.reflect.KClass
 
 @Target(AnnotationTarget.PROPERTY)
 annotation class JsonExclude
-//
-//@Target(AnnotationTarget.ANNOTATION_CLASS)
-//annotation class BindingAnnotation
-//
-//@BindingAnnotation
+
+@Target(AnnotationTarget.PROPERTY)
 annotation class JsonName(val name: String)
